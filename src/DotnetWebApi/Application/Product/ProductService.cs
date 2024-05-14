@@ -7,13 +7,13 @@ namespace Application.Product;
 
 public interface IProductService
 {
-    public Task<List<ProductView>> GetProducts();
+    public Task<List<ProductView>> GetProductsAsync();
 
-    public Task<ProductView> GetProduct(int id);
+    public Task<ProductView> GetProductAsync(int id);
 
-    public Task DeleteProduct(int id);
+    public Task DeleteProductAsync(int id);
 
-    public Task<ProductView> SaveProduct(ProductModel model);
+    public Task<ProductView> SaveProductAsync(ProductModel model);
 }
 
 public class ProductService : IProductService
@@ -27,7 +27,7 @@ public class ProductService : IProductService
         _mapper = mapper;
     }
 
-    public async Task<List<ProductView>> GetProducts()
+    public async Task<List<ProductView>> GetProductsAsync()
     {
         List<ProductEntity> entities = await _dbContext.Products
             .Include(p => p.Details)
@@ -36,7 +36,7 @@ public class ProductService : IProductService
         return _mapper.ToViews(entities);
     }
 
-    public async Task<ProductView> GetProduct(int id)
+    public async Task<ProductView> GetProductAsync(int id)
     {
         ProductEntity entity = await _dbContext.Products
                 .Include(p => p.Details)
@@ -46,7 +46,7 @@ public class ProductService : IProductService
         return _mapper.ToView(entity);
     }
 
-    public async Task DeleteProduct(int id)
+    public async Task DeleteProductAsync(int id)
     {
         ProductEntity? entity = await _dbContext.Products.FindAsync(id);
 
@@ -57,7 +57,7 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<ProductView> SaveProduct(ProductModel model)
+    public async Task<ProductView> SaveProductAsync(ProductModel model)
     {
         ProductEntity entity = _mapper.ToEntity(model);
 

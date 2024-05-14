@@ -17,24 +17,24 @@ public class ProductController
     [HttpGet]
     public async Task<List<ProductView>> GetAllProducts()
     {
-        return await _service.GetProducts();
+        return await _service.GetProductsAsync();
     }
 
     [HttpGet("{id:int}")]
     public async Task<ProductView> Get(int id)
     {
-        return await _service.GetProduct(id);
+        return await _service.GetProductAsync(id);
     }
 
     [HttpPost]
     public async Task<ProductView> AddProduct([FromBody] ProductModel product)
     {
-        return await _service.SaveProduct(product);
+        return await _service.SaveProductAsync(product);
     }
 
     [HttpDelete("{id:int}")]
     public async Task DeleteProduct(int id)
     {
-        await _service.DeleteProduct(id);
+        await _service.DeleteProductAsync(id);
     }
 }

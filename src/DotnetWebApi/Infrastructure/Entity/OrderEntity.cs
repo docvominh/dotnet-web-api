@@ -1,5 +1,3 @@
-using Web.Data.Entity;
-
 namespace Infrastructure.Entity;
 
 public class OrderEntity
@@ -12,30 +10,18 @@ public class OrderEntity
 
     public int CustomerId { get; init; }
 
-    public virtual CustomerEntity Customer { get; init; }
+    public virtual CustomerEntity Customer { get; init; } = null!;
 
-    public virtual List<OrderProductEntity> OrderProducts { get; set; } = [];
-
-    public required string ShippingAddress { get; init; }
-
-    public required bool GstInvoice { get; init; }
-
-    public string? StripePaymentIntentId { get; set; }
-
-    public string? NabTransactionId { get; set; }
-
-    public string? ParcelTrackingNumber { get; set; }
+    public virtual List<OrderProductEntity> OrderProducts { get; set; } = null!;
 
     public DateTimeOffset CreatedDate { get; set; }
-
-    public bool Deleted { get; set; }
 }
 
 public enum OrderState
 {
     Create,
     Paid,
-    Shiped,
+    Shipped,
     Done,
     Cancel
 }

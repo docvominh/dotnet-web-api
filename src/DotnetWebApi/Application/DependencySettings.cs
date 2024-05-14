@@ -1,3 +1,5 @@
+using Application.Customer;
+using Application.Order;
 using Application.Product;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,5 +12,10 @@ public static class DependencySettings
         services.AddSingleton<IProductDetailMapper, ProductDetailMapper>();
         services.AddSingleton<IProductMapper, ProductMapper>();
         services.AddScoped<IProductService, ProductService>();
+
+        services.AddSingleton<ICustomerMapper, CustomerMapper>();
+        services.AddSingleton<IOrderItemMapper, OrderItemMapper>();
+        services.AddSingleton<IOrderMapper, OrderMapper>();
+        services.AddScoped<IOrderService, OrderService>();
     }
 }

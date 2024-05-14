@@ -9,7 +9,5 @@ public class ProductEntity
     public decimal Price { get; set; }
     public DateTimeOffset CreatedDate { get; set; }
     public virtual ProductDetailEntity? Details { get; set; }
-    public virtual List<TagEntity> Tags { get; init; } = [];
-    public virtual List<OrderProductEntity>? OrderProducts { get; init; }
-    
+    public virtual List<TagEntity> Tags { get; init; } = null!;
 }

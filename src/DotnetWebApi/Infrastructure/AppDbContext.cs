@@ -11,8 +11,6 @@ public class AppDbContext : DbContext
 
     public DbSet<OrderEntity> Orders { get; set; }
 
-    public DbSet<OrderProductEntity> OrderProducts { get; set; }
-
     public AppDbContext()
     {
     }
@@ -51,7 +49,6 @@ public class AppDbContext : DbContext
 
 
                 // Product - Tag join table
-
                 e.HasMany(t => t.Tags)
                     .WithMany(p => p.Products)
                     .UsingEntity(
@@ -100,15 +97,12 @@ public class AppDbContext : DbContext
                 e.Property(x => x.Id).ValueGeneratedOnAdd().UseIdentityColumn(1000);
                 e.Property(x => x.Total).HasPrecision(18, 2);
                 e.Property(x => x.State).HasMaxLength(50);
-                e.Property(x => x.ShippingAddress).HasMaxLength(255);
-                e.Property(x => x.StripePaymentIntentId).HasMaxLength(50);
-                e.Property(x => x.NabTransactionId).HasMaxLength(255);
                 e.Property(x => x.CreatedDate).HasColumnType("datetimeoffset");
 
-                e.HasOne(order => order.Customer)
+                e.HasMany(order => order.OrderProducts)
                     .WithOne()
-                    .HasForeignKey<OrderEntity>(nameof(OrderEntity.CustomerId))
-                    .HasConstraintName("FK_Order_User_Username");
+                    .HasForeignKey(orderProduct => orderProduct.OrderId)
+                    .HasConstraintName("FK_Order_Product_OrderId");
             }
         );
 
@@ -121,14 +115,9 @@ public class AppDbContext : DbContext
                 e.HasKey(x => new { x.OrderId, x.ProductId }).HasName("PK_OrderProduct");
                 e.Property(x => x.Quantity);
 
-                e.HasOne(orderProduct => orderProduct.Order)
-                    .WithMany(order => order.OrderProducts)
-                    .HasForeignKey(orderProduct => orderProduct.OrderId)
-                    .HasConstraintName("FK_Order_Product_OrderId");
-
                 e.HasOne(orderProduct => orderProduct.Product)
-                    .WithMany(product => product.OrderProducts)
-                    .HasForeignKey(orderProduct => orderProduct.ProductId)
+                    .WithOne()
+                    .HasForeignKey<OrderProductEntity>(orderProduct => orderProduct.ProductId)
                     .HasConstraintName("FK_Order_Product_ProductId");
             }
         );
